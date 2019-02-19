@@ -1,0 +1,11 @@
+import "LocationViewModel.idl";
+
+namespace GUI
+{
+	[default_interface]
+	runtimeclass LocationView : Windows.UI.Xaml.Controls.Page
+	{
+		LocationView();
+		LocationViewModel LocationViewModel{ get; };
+	}
+}

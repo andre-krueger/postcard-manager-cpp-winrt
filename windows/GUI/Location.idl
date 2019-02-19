@@ -1,0 +1,7 @@
+namespace GUI
+{
+	runtimeclass Location : Windows.UI.Xaml.Data.INotifyPropertyChanged
+	{
+		String Name;
+	}
+}

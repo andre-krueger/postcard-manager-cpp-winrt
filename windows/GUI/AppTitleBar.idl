@@ -1,0 +1,8 @@
+namespace GUI
+{
+	[default_interface]
+	runtimeclass AppTitleBar : Windows.UI.Xaml.Controls.UserControl
+	{
+		AppTitleBar();
+	}
+}
