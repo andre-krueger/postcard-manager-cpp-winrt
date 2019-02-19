@@ -1,0 +1,7 @@
+namespace GUI
+{
+    runtimeclass LocationViewModel
+    {
+        Windows.Foundation.Collections.IObservableVector<IInspectable> Locations{ get; };
+    }
+}

@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="App.idl" />
+    <Midl Include="LocationView.idl" />
+    <Midl Include="LocationViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="Location.idl">
+      <Filter>Models</Filter>
+    </Midl>
+    <Midl Include="TitleBar.idl" />
+    <Midl Include="AppTitleBar.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="LocationView.cpp" />
+    <ClCompile Include="LocationViewModel.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="Location.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBar.cpp" />
+    <ClCompile Include="AppTitleBar.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.h" />
+    <ClInclude Include="LocationView.h" />
+    <ClInclude Include="LocationViewModel.h">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="Location.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleBar.h" />
+    <ClInclude Include="AppTitleBar.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GUI_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views">
+      <UniqueIdentifier>{4850cc39-7303-4b04-9181-990f9967cb73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings">
+      <UniqueIdentifier>{e52711d5-74e0-49ff-981e-54936504cc9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\en-US">
+      <UniqueIdentifier>{11bf5153-163f-4f47-a5a9-634d9586ebb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\de-DE">
+      <UniqueIdentifier>{ac974e36-8849-481d-bad4-99ca668db261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModels">
+      <UniqueIdentifier>{28c5d5d1-5137-4e9c-8969-7c4e2f756fb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{1ba82d54-5596-4e9f-88d1-89352e05783b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\Resources.resw">
+      <Filter>Strings\en-US</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\de-DE\Resources.resw">
+      <Filter>Strings\de-DE</Filter>
+    </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="LocationView.xaml">
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="AppTitleBar.xaml">
+      <Filter>Views</Filter>
+    </Page>
+  </ItemGroup>
+</Project>
