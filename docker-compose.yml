@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  core:
+    build: .
+    volumes:
+      - ./:/app
+    command: >
+      bash -c "[ -d entr ] || hg clone https://bitbucket.org/eradman/entr
+      && cd entr
+      && wget http://entrproject.org/patches/entr-3.9-wsl
+      && patch -p1 < entr-3.9-wsl
+      && ./configure && make install
+      && cd /app/linux && mkdir -p build
+      && cd build && cmake ..
+      && cd /app && find . -type f \( -name '*.cpp' -o -name '*.hpp' -o -name '*.h' \) -not -path '*build/*' | entr echo yo"

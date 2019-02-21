@@ -12,7 +12,6 @@
     <Midl Include="Location.idl">
       <Filter>Models</Filter>
     </Midl>
-    <Midl Include="TitleBar.idl" />
     <Midl Include="AppTitleBar.idl" />
   </ItemGroup>
   <ItemGroup>
@@ -26,7 +25,6 @@
     <ClCompile Include="Location.cpp">
       <Filter>Models</Filter>
     </ClCompile>
-    <ClCompile Include="TitleBar.cpp" />
     <ClCompile Include="AppTitleBar.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -39,7 +37,6 @@
     <ClInclude Include="Location.h">
       <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="TitleBar.h" />
     <ClInclude Include="AppTitleBar.h" />
   </ItemGroup>
   <ItemGroup>
