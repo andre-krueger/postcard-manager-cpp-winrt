@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "sqlite_connection.hpp"
-#include <iostream>
 
 class SqliteConnectionTest : public ::testing::Test {
 protected:
@@ -13,7 +12,8 @@ protected:
         delete connection;
         std::remove("test.db");
     }
-    SqliteConnection *connection;
+
+    SqliteConnection* connection;
 };
 
 TEST_F(SqliteConnectionTest, testCreateDatabase) {

@@ -16,6 +16,7 @@ namespace winrt::GUI::implementation
 
     private:
         hstring m_name;
+        // TODO: insert field for primary key
         winrt::event<Windows::UI::Xaml::Data::PropertyChangedEventHandler> m_propertyChanged;
     };
 }

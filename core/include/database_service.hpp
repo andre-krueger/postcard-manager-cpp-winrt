@@ -4,5 +4,8 @@
 
 class DatabaseService {
 public:
-    SqliteConnection getConnection(const std::string connectionPath);
+    explicit DatabaseService(const std::string& databasePath) : m_databasePath(databasePath) {}
+    SqliteConnection getConnection();
+private:
+    std::string m_databasePath;
 };

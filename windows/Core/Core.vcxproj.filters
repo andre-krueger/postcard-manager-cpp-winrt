@@ -7,7 +7,10 @@
     <ClCompile Include="..\..\core\src\pch.cpp">
       <Filter>Sources Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\core\include\database_service.cpp">
+    <ClCompile Include="..\..\core\src\database_service.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\src\location_repository.cpp">
       <Filter>Sources Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -19,6 +22,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\core\include\database_service.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\include\location_repository.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\include\models.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

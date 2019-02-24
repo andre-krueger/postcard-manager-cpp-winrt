@@ -29,5 +29,8 @@
     <ClCompile Include="..\..\core\tests\integration\test_sqlite_connection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\core\tests\integration\test_location_repository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
