@@ -1,4 +1,5 @@
 #pragma once
+#include "models.hpp"
 
 struct sqlite_deleter {
     void operator()(sqlite3 *connection) const { sqlite3_close(connection); }
