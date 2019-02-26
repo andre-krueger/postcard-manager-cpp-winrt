@@ -5,21 +5,22 @@
 class LocationRepositoryTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        auto databaseService = DatabaseService{ "test.db" };
         //databaseService.getConnection().execute("CREATE table");
-        locationRepository = new LocationRepository(databaseService);
+        //locationRepository = new LocationRepository(databaseService);
     }
 
     void TearDown() override {
-        delete locationRepository;
+        //delete locationRepository;
         std::remove("test.db");
     }
 
-    LocationRepository *locationRepository;
+    inline static DatabaseService databaseService{ "test.db" };
+    inline static LocationRepository locationRepository{ databaseService };
 };
 
 TEST_F(LocationRepositoryTest, testInsert) {
     auto location = models::Location{ 1 };
-    locationRepository->insert(location);
+    locationRepository.insert(location);
+    //auto numOfLocations = databaseService.getConnection().execute();
     ASSERT_TRUE(std::filesystem::exists("test.db"));
 }

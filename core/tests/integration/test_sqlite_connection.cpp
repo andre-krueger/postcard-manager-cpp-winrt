@@ -5,17 +5,16 @@
 class SqliteConnectionTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        connection = new SqliteConnection{ "test.db" };
     }
 
     void TearDown() override {
-        delete connection;
         std::remove("test.db");
     }
 
-    SqliteConnection *connection;
+    const static inline SqliteConnection connection{ "test.db" };
 };
 
 TEST_F(SqliteConnectionTest, testCreateDatabase) {
     ASSERT_TRUE(std::filesystem::exists("test.db"));
+    //connection->load<models::Location>();
 }

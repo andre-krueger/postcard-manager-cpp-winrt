@@ -4,8 +4,9 @@
 
 class LocationRepository {
 public:
-    LocationRepository(DatabaseService databaseService);
-    int64_t insert(models::Location& location);
+    LocationRepository(const DatabaseService databaseService);
+    int64_t insert(const models::Location& location);
+
 private:
     DatabaseService _databaseService;
 };
