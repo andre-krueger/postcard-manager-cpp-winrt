@@ -7,7 +7,3 @@ SqliteConnection::SqliteConnection(const std::string& connectionPath) {
     sqlite3_open(connectionPath.c_str(), &connection);
     connectionHandle = std::unique_ptr<sqlite3, sqlite_deleter>(connection);
 }
-
-int64_t SqliteConnection::execute() {
-    return 1;
-}

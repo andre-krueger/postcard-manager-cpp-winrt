@@ -5,12 +5,10 @@
 class LocationRepositoryTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        //databaseService.getConnection().execute("CREATE table");
-        //locationRepository = new LocationRepository(databaseService);
+        databaseService.getConnection().execute("CREATE TABLE locations (id INTEGER PRIMARY KEY, name TEXT);");
     }
 
     void TearDown() override {
-        //delete locationRepository;
         std::remove("test.db");
     }
 
@@ -19,8 +17,26 @@ protected:
 };
 
 TEST_F(LocationRepositoryTest, testInsert) {
-    auto location = models::Location{ 1 };
+    auto location = models::Location{};
+    location.name = "test";
+    auto id = locationRepository.insert(location);
+    ASSERT_EQ(id, 1);
+}
+
+TEST_F(LocationRepositoryTest, testUpdate) {
+    auto location = models::Location{};
+    location.name = "test";
+    auto id = locationRepository.insert(location);
+    location.id = id;
+    location.name = "";
+    locationRepository.update(location);
+}
+
+TEST_F(LocationRepositoryTest, testGetAll) {
+    auto location = models::Location{};
+    location.name = "test";
     locationRepository.insert(location);
-    //auto numOfLocations = databaseService.getConnection().execute();
-    ASSERT_TRUE(std::filesystem::exists("test.db"));
+    location.name = "test2";
+    locationRepository.insert(location);
+    auto results = locationRepository.getAll();
 }
