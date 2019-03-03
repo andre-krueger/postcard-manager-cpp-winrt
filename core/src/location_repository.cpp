@@ -28,8 +28,3 @@ int64_t LocationRepository::update(const models::Location& location) {
         location
     );
 }
-
-std::vector<models::Location> LocationRepository::getAll() {
-    auto connection = _databaseService.getConnection();
-    return connection.load<models::Location>("SELECT * FROM locations;");
-}
