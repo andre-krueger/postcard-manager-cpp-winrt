@@ -1,18 +1,25 @@
 #pragma once
 #include "models.hpp"
 
+enum class DatabaseError {
+    GenericError,
+    UniqueConstraintError,
+};
+
 struct sqlite_deleter {
     void operator()(sqlite3 *connection) const { sqlite3_close(connection); }
 };
+
+using QueryResult = std::tuple<std::string, std::string>;
 
 class SqliteConnection {
 public:
     SqliteConnection(const std::string& connectionPath);
 
     template <typename T>
-    void forEach(int index, sqlite3_stmt* stmt, T& value) {
+    void forEach(int index, sqlite3_stmt* stmt, const T& value) {
         if constexpr (std::is_constructible_v<std::string, T>) {
-            sqlite3_bind_text(stmt, index, value.c_str(), value.length(), SQLITE_STATIC);
+            sqlite3_bind_text(stmt, index, value.c_str(), value.length(), SQLITE_TRANSIENT);
         }
         else if constexpr (std::is_integral_v<T>) {
             sqlite3_bind_int64(stmt, index, value);
@@ -26,7 +33,7 @@ public:
     }
 
     template <typename... T>
-    int64_t execute(const std::string& query, const T&... ts) {
+    std::variant<uint64_t, DatabaseError> execute(const std::string& query, const T&... ts) {
         sqlite3_stmt* stmt = nullptr;
         sqlite3_prepare_v2(m_connectionHandle.get(), query.c_str(), -1, &stmt, nullptr);
         int64_t result = 0;
@@ -34,19 +41,31 @@ public:
             int index = 1;
             forEach(index, stmt, ts...);
         }
+
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             result = sqlite3_column_int(stmt, 0);
         }
+
+        if (sqlite3_errcode(m_connectionHandle.get()) == SQLITE_ERROR) {
+            sqlite3_finalize(stmt);
+            return DatabaseError::GenericError;
+        }
+
+        if (sqlite3_errcode(m_connectionHandle.get()) == SQLITE_CONSTRAINT) {
+            sqlite3_finalize(stmt);
+            return DatabaseError::UniqueConstraintError;
+        }
+
         sqlite3_finalize(stmt);
         return result;
     }
 
-    template<typename Entity, typename... T>
-    std::vector<Entity> load(const std::string& query, const T&... ts) {
+    template<typename Entity, typename QueryResult = std::vector<Entity>, typename... T>
+    std::variant<QueryResult, DatabaseError> load(const std::string& query, const T&... ts) {
         sqlite3_stmt* stmt = nullptr;
         sqlite3_prepare_v2(m_connectionHandle.get(), query.c_str(), -1, &stmt, nullptr);
         auto columnCount = sqlite3_column_count(stmt);
-        std::vector<Entity> results{};
+        QueryResult results{};
         if constexpr (sizeof ... (T) > 0) {
             int index = 1;
             forEach(index, stmt, ts...);
@@ -63,9 +82,26 @@ public:
                         entity.name = reinterpret_cast<const char *>(sqlite3_column_text(stmt, columnIndex));
                     }
                 }
+                else {
+                    if (sqlite3_column_text(stmt, columnIndex) != nullptr) {
+                        auto columnName = sqlite3_column_name(stmt, columnIndex);
+                        auto columnValue = reinterpret_cast<const char *>(sqlite3_column_text(stmt, columnIndex));
+                        auto result = std::make_tuple(columnName, columnValue);
+                        results.push_back(result);
+                    }
+                }
             }
-            results.push_back(entity);
+
+            if constexpr (std::is_convertible<std::vector<Entity>, QueryResult>::value) {
+                results.push_back(entity);
+            }
         }
+
+        if (sqlite3_errcode(m_connectionHandle.get()) == SQLITE_ERROR) {
+            sqlite3_finalize(stmt);
+            return DatabaseError::GenericError;
+        }
+
         sqlite3_finalize(stmt);
         return results;
     }

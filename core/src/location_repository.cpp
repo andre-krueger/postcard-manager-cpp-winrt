@@ -2,16 +2,18 @@
 
 #include "location_repository.hpp"
 
-int64_t LocationRepository::insert(const models::Location& location) {
+std::variant<uint64_t, DatabaseError> LocationRepository::insert(const models::Location &location) {
     auto connection = m_databaseService.getConnection();
-    connection.execute(
-        "INSERT INTO location (name) VALUES (@name);",
-        location.name
-    );
+    auto result = connection.execute(
+                    "INSERT INTO location (name) VALUES (@name);",
+                    location.name);
+    if (std::holds_alternative<DatabaseError>(result)) {
+        return result;
+    }
     return connection.execute("SELECT LAST_INSERT_ROWID();");
 }
 
-int64_t LocationRepository::update(const models::Location& location) {
+std::variant<uint64_t, DatabaseError> LocationRepository::update(const models::Location &location) {
     auto connection = m_databaseService.getConnection();
     return connection.execute(
         "UPDATE location SET name = @name WHERE id = @id;",
@@ -20,7 +22,7 @@ int64_t LocationRepository::update(const models::Location& location) {
     );
 }
 
-int64_t LocationRepository::remove(uint64_t id) {
+std::variant<uint64_t, DatabaseError> LocationRepository::remove(uint64_t id) {
     auto connection = m_databaseService.getConnection();
     return connection.execute(
         "DELETE FROM location WHERE id = @id;",
@@ -28,12 +30,12 @@ int64_t LocationRepository::remove(uint64_t id) {
     );
 }
 
-std::vector<models::Location> LocationRepository::getAll() {
+std::variant<std::vector<models::Location>, DatabaseError> LocationRepository::getAll() {
     auto connection = m_databaseService.getConnection();
     return connection.load<models::Location>("SELECT * FROM location;");
 }
 
-std::vector<models::Location> LocationRepository::getById(uint64_t id) {
+std::variant<std::vector<models::Location>, DatabaseError> LocationRepository::getById(uint64_t id) {
     auto connection = m_databaseService.getConnection();
     return connection.load<models::Location>(
         "SELECT * FROM location WHERE id = @id;",

@@ -23,7 +23,9 @@ set(UNIT_TESTS_SOURCES)
 
 set(INTEGRATION_TESTS_SOURCES
   ../core/tests/integration/test_location_repository.cpp
-  ../core/tests/integration/test_sqlite_connection.cpp)
+  ../core/tests/integration/test_sqlite_connection.cpp
+  ../core/tests/integration/test_database_service.cpp
+        )
 
 include (CTest)
 enable_testing()

@@ -4,3 +4,6 @@
 #include <vector>
 #include <string>
 #include "sqlite3.h"
+#include <map>
+#include <tuple>
+#include <variant>
