@@ -15,11 +15,11 @@ protected:
 TEST_F(DatabaseServiceTest, testCommitOrRollback) {
     auto connection = databaseService.getConnection();
     databaseService.commitOrRollback(connection, "CREATE TABLE test (id INTEGER PRIMARY KEY, field1 TEXT UNIQUE);");
-    auto pragmaResults = connection.load<std::string, std::vector<QueryResult>>("PRAGMA table_info(test);");
+    auto pragmaResults = connection.load<std::string, std::vector<sqlite::QueryResult>>("PRAGMA table_info(test);");
 
     std::stringstream result{ "", std::ios_base::app | std::ios_base::out };
 
-    for (auto pragmaResult : std::get<std::vector<QueryResult>>(pragmaResults)) {
+    for (auto pragmaResult : std::get<std::vector<sqlite::QueryResult>>(pragmaResults)) {
         result << std::get<0>(pragmaResult) << " ";
         result << std::get<1>(pragmaResult);
     }
@@ -44,11 +44,11 @@ TEST_F(DatabaseServiceTest, testCommitOrRollbackWithFaultyMigration) {
     databaseService.commitOrRollback(connection, "CREATE TABLE test (id INTEGER PRIMARY KEY, field1 TEXT UNIQUE);");
 
     auto migrateResult = databaseService.commitOrRollback(connection, "CREATE TABLE test (id INTEGER PRIMARY KEY, field1 TEXT UNIQUE);");
-    auto pragmaResults = connection.load<std::string, std::vector<QueryResult>>("PRAGMA table_info(test);");
+    auto pragmaResults = connection.load<std::string, std::vector<sqlite::QueryResult>>("PRAGMA table_info(test);");
 
     std::stringstream result{ "", std::ios_base::app | std::ios_base::out };
 
-    for (auto pragmaResult : std::get<std::vector<QueryResult>>(pragmaResults)) {
+    for (auto pragmaResult : std::get<std::vector<sqlite::QueryResult>>(pragmaResults)) {
         result << std::get<0>(pragmaResult) << " ";
         result << std::get<1>(pragmaResult);
     }
@@ -71,14 +71,14 @@ TEST_F(DatabaseServiceTest, testCommitOrRollbackWithFaultyMigration) {
 TEST_F(DatabaseServiceTest, testApplicationMigrate) {
     databaseService.migrate(database::migrations);
     auto pragmaResults = databaseService.getConnection()
-        .load<std::string, std::vector<QueryResult>>("PRAGMA table_info(location);");
+        .load<std::string, std::vector<sqlite::QueryResult>>("PRAGMA table_info(location);");
     auto userVersion = databaseService.getConnection().execute("PRAGMA user_version;");
 
     ASSERT_EQ(std::get<uint64_t>(userVersion), 1);
 
     std::stringstream result{ "", std::ios_base::app | std::ios_base::out };
 
-    for (auto pragmaResult : std::get<std::vector<QueryResult>>(pragmaResults)) {
+    for (auto pragmaResult : std::get<std::vector<sqlite::QueryResult>>(pragmaResults)) {
         result << std::get<0>(pragmaResult) << " ";
         result << std::get<1>(pragmaResult);
     }
@@ -106,10 +106,10 @@ TEST_F(DatabaseServiceTest, testFaultyApplicationMigrate) {
     ASSERT_EQ(std::get<DatabaseError>(migrationResult), DatabaseError::GenericError);
 
     auto pragmaResults = databaseService.getConnection()
-            .load<std::string, std::vector<QueryResult>>("PRAGMA table_info(test);");
+            .load<std::string, std::vector<sqlite::QueryResult>>("PRAGMA table_info(test);");
     auto userVersion = databaseService.getConnection().execute("PRAGMA user_version;");
 
     ASSERT_EQ(std::get<uint64_t>(userVersion), 0);
-    ASSERT_EQ(std::get<std::vector<QueryResult>>(pragmaResults).size(), 0);
+    ASSERT_EQ(std::get<std::vector<sqlite::QueryResult>>(pragmaResults).size(), 0);
 }
 

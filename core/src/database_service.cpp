@@ -25,8 +25,12 @@ std::variant<std::monostate, DatabaseError> DatabaseService::migrate(std::vector
     if (std::holds_alternative<uint64_t>(userVersion)) {
         switch (std::get<uint64_t>(userVersion)) {
             case 0:
-                // TODO: Actually detect errors and rollback respectively
                 result = commitOrRollback(connection, migrations.at(0));
+                if (std::holds_alternative<DatabaseError>(result)) {
+                    result = std::get<DatabaseError>(result);
+                    break;
+                }
+                result = commitOrRollback(connection, migrations.at(1));
                 if (std::holds_alternative<DatabaseError>(result)) {
                     result = std::get<DatabaseError>(result);
                     break;

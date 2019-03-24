@@ -3,6 +3,7 @@
 
 enum class DatabaseError {
     GenericError,
+    ForeignKeyConstraintError,
     UniqueConstraintError,
 };
 
@@ -10,7 +11,9 @@ struct sqlite_deleter {
     void operator()(sqlite3 *connection) const { sqlite3_close(connection); }
 };
 
-using QueryResult = std::tuple<std::string, std::string>;
+namespace sqlite {
+    using QueryResult = std::tuple<std::string, std::string>;
+}
 
 class SqliteConnection {
 public:
@@ -36,14 +39,14 @@ public:
     std::variant<uint64_t, DatabaseError> execute(const std::string& query, const T&... ts) {
         sqlite3_stmt* stmt = nullptr;
         sqlite3_prepare_v2(m_connectionHandle.get(), query.c_str(), -1, &stmt, nullptr);
-        int64_t result = 0;
+        uint64_t result = 0;
         if constexpr (sizeof... (T) > 0) {
             int index = 1;
             forEach(index, stmt, ts...);
         }
 
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-            result = sqlite3_column_int(stmt, 0);
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            result = sqlite3_column_int64(stmt, 0);
         }
 
         if (sqlite3_errcode(m_connectionHandle.get()) == SQLITE_ERROR) {
@@ -51,7 +54,12 @@ public:
             return DatabaseError::GenericError;
         }
 
-        if (sqlite3_errcode(m_connectionHandle.get()) == SQLITE_CONSTRAINT) {
+        if (sqlite3_extended_errcode(m_connectionHandle.get()) == SQLITE_CONSTRAINT_FOREIGNKEY) {
+            sqlite3_finalize(stmt);
+            return DatabaseError::ForeignKeyConstraintError;
+        }
+
+        if (sqlite3_extended_errcode(m_connectionHandle.get()) == SQLITE_CONSTRAINT_UNIQUE) {
             sqlite3_finalize(stmt);
             return DatabaseError::UniqueConstraintError;
         }
@@ -75,11 +83,25 @@ public:
             Entity entity;
             for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
                 if constexpr ((std::is_same_v<models::Location, Entity>)) {
-                    if (sqlite3_column_type(stmt, columnIndex) == SQLITE_INTEGER) {
+                    if (std::string(sqlite3_column_name(stmt, columnIndex)) == "id") {
                         entity.id = sqlite3_column_int64(stmt, columnIndex);
                     }
-                    else if (sqlite3_column_type(stmt, columnIndex) == SQLITE_TEXT) {
+                    else if (std::string(sqlite3_column_name(stmt, columnIndex)) == "name") {
                         entity.name = reinterpret_cast<const char *>(sqlite3_column_text(stmt, columnIndex));
+                    }
+                }
+                else if constexpr ((std::is_same_v<models::Card, Entity>)) {
+                    if (std::string(sqlite3_column_name(stmt, columnIndex)) == "id") {
+                        entity.id = sqlite3_column_int64(stmt, columnIndex);
+                    }
+                    else if (std::string(sqlite3_column_name(stmt, columnIndex)) == "name") {
+                        entity.name = reinterpret_cast<const char *>(sqlite3_column_text(stmt, columnIndex));
+                    }
+                    else if (std::string(sqlite3_column_name(stmt, columnIndex)) == "description") {
+                        entity.description = reinterpret_cast<const char *>(sqlite3_column_text(stmt, columnIndex));
+                    }
+                    else if (std::string(sqlite3_column_name(stmt, columnIndex)) == "location_id") {
+                        entity.locationId = sqlite3_column_int64(stmt, columnIndex);
                     }
                 }
                 else {

@@ -4,7 +4,20 @@
 
 namespace database {
     const static inline std::vector<std::string> migrations{
-            "CREATE TABLE location (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL);"
+            R"==(
+            CREATE TABLE location (
+                id INTEGER PRIMARY KEY,
+                name TEXT UNIQUE NOT NULL
+            );
+            )==",
+            R"==(
+            CREATE TABLE card (
+                id INTEGER PRIMARY KEY,
+                name TEXT,
+                description TEXT,
+                location_id INTEGER NOT NULL REFERENCES location(id)
+            );
+            )=="
     };
     static inline const char* databaseName = "postcards.db";
 };

@@ -6,12 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCES
   ../core/src/sqlite_connection.cpp
-  ../core/src/database_service.cpp
-  ../core/src/location_repository.cpp)
+  ../core/src/database_service.cpp)
 set(HEADERS
   ../core/include/database_service.hpp
   ../core/include/sqlite_connection.hpp
   ../core/include/location_repository.hpp
+  ../core/include/card_repository.hpp
+  ../core/include/repository_interface.hpp
   ../core/include/models.hpp)
 
 add_library(core SHARED ${SOURCES} ${HEADERS})
@@ -23,9 +24,9 @@ set(UNIT_TESTS_SOURCES)
 
 set(INTEGRATION_TESTS_SOURCES
   ../core/tests/integration/test_location_repository.cpp
+  ../core/tests/integration/test_card_repository.cpp
   ../core/tests/integration/test_sqlite_connection.cpp
-  ../core/tests/integration/test_database_service.cpp
-        )
+  ../core/tests/integration/test_database_service.cpp)
 
 include (CTest)
 enable_testing()

@@ -13,7 +13,9 @@ protected:
     }
 
     inline static DatabaseService databaseService{ database::databaseName };
-    inline static LocationRepository locationRepository{ databaseService };
+    inline static LocationRepository
+            <DatabaseService, models::Location,
+            location_repository::ExecuteResult, location_repository::LoadResult> locationRepository{ databaseService };
 };
 
 TEST_F(LocationRepositoryTest, testInsert) {
