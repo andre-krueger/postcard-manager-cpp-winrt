@@ -8,7 +8,7 @@ SqliteConnection DatabaseService::getConnection()
 }
 
 std::variant<std::monostate, DatabaseError> DatabaseService::commitOrRollback(SqliteConnection &connection,
-                                                                              const std::string &query) {
+    const std::string &query) {
     connection.execute("BEGIN TRANSACTION;");
     auto result = connection.execute(query);
     if (!std::holds_alternative<DatabaseError>(result)) {
@@ -24,18 +24,18 @@ std::variant<std::monostate, DatabaseError> DatabaseService::migrate(std::vector
     std::variant<std::monostate, DatabaseError> result;
     if (std::holds_alternative<uint64_t>(userVersion)) {
         switch (std::get<uint64_t>(userVersion)) {
-            case 0:
-                result = commitOrRollback(connection, migrations.at(0));
-                if (std::holds_alternative<DatabaseError>(result)) {
-                    result = std::get<DatabaseError>(result);
-                    break;
-                }
-                result = commitOrRollback(connection, migrations.at(1));
-                if (std::holds_alternative<DatabaseError>(result)) {
-                    result = std::get<DatabaseError>(result);
-                    break;
-                }
-                commitOrRollback(connection, "PRAGMA user_version = 1;");
+        case 0:
+            result = commitOrRollback(connection, migrations.at(0));
+            if (std::holds_alternative<DatabaseError>(result)) {
+                result = std::get<DatabaseError>(result);
+                break;
+            }
+            result = commitOrRollback(connection, migrations.at(1));
+            if (std::holds_alternative<DatabaseError>(result)) {
+                result = std::get<DatabaseError>(result);
+                break;
+            }
+            commitOrRollback(connection, "PRAGMA user_version = 1;");
         }
     }
     return result;

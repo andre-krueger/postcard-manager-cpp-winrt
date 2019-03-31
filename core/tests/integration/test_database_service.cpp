@@ -106,7 +106,7 @@ TEST_F(DatabaseServiceTest, testFaultyApplicationMigrate) {
     ASSERT_EQ(std::get<DatabaseError>(migrationResult), DatabaseError::GenericError);
 
     auto pragmaResults = databaseService.getConnection()
-            .load<std::string, std::vector<sqlite::QueryResult>>("PRAGMA table_info(test);");
+        .load<std::string, std::vector<sqlite::QueryResult>>("PRAGMA table_info(test);");
     auto userVersion = databaseService.getConnection().execute("PRAGMA user_version;");
 
     ASSERT_EQ(std::get<uint64_t>(userVersion), 0);

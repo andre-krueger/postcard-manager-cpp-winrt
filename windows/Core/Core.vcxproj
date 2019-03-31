@@ -101,37 +101,37 @@
     <GenerateManifest>false</GenerateManifest>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\visit_struct\include\;$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\visit_struct\include\;$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\visit_struct\include\;$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <GenerateManifest>false</GenerateManifest>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\visit_struct\include\;$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\visit_struct\include\;$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <GenerateManifest>false</GenerateManifest>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\visit_struct\include\;$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\core\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -239,6 +239,7 @@
     <ClInclude Include="..\..\core\include\location_repository.hpp" />
     <ClInclude Include="..\..\core\include\models.hpp" />
     <ClInclude Include="..\..\core\include\pch.h" />
+    <ClInclude Include="..\..\core\include\repository_interface.hpp" />
     <ClInclude Include="..\..\core\include\sqlite_connection.hpp" />
   </ItemGroup>
   <ItemGroup>

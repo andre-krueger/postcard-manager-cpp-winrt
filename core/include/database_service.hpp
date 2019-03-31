@@ -28,6 +28,14 @@ public:
     SqliteConnection getConnection();
     std::variant<std::monostate, DatabaseError> commitOrRollback(SqliteConnection &connection, const std::string &query);
     std::variant<std::monostate, DatabaseError> migrate(std::vector<std::string> migrations);
+    template <typename Entity, typename Res>
+    void insert(Entity& entity, Res& res) {
+        if constexpr ((std::is_same_v<Entity, winrt::GUI::implementation::Location>))
+        {
+            res.Append(entity);
+
+        }
+    }
 private:
     std::string m_databasePath;
 };

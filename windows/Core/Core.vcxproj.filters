@@ -30,6 +30,9 @@
     <ClInclude Include="..\..\core\include\card_repository.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\include\repository_interface.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Sources Files">

@@ -22,7 +22,9 @@ App::App()
     InitializeComponent();
     Suspending({ this, &App::OnSuspending });
 
-#if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
+    App::databaseService.migrate(database::migrations);
+
+    #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
     UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e)
         {
             if (IsDebuggerPresent())
@@ -31,7 +33,7 @@ App::App()
                 __debugbreak();
             }
         });
-#endif
+    #endif
 }
 
 /// <summary>

@@ -14,7 +14,6 @@ namespace winrt::GUI::implementation
         void OnSuspending(IInspectable const&, Windows::ApplicationModel::SuspendingEventArgs const&);
         void OnNavigationFailed(IInspectable const&, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs const&);
 
-        inline static DatabaseService databaseService{ "" };
-        inline static LocationRepository LocationRepository{ databaseService };
+        inline static DatabaseService databaseService{ winrt::to_string(winrt::Windows::Storage::ApplicationData::Current().LocalFolder().Path() + L"\\test.db") };
     };
 }

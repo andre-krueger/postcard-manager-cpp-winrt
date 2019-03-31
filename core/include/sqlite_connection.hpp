@@ -21,9 +21,16 @@ public:
 
     template <typename T>
     void forEach(int index, sqlite3_stmt* stmt, const T& value) {
+        #ifdef _WIN32
+        if constexpr (std::is_constructible_v<winrt::hstring, T>) {
+            sqlite3_bind_text(stmt, index, winrt::to_string(value).c_str(), value.size(), SQLITE_TRANSIENT);
+        }
+        #endif
+
         if constexpr (std::is_constructible_v<std::string, T>) {
             sqlite3_bind_text(stmt, index, value.c_str(), value.length(), SQLITE_TRANSIENT);
         }
+
         else if constexpr (std::is_integral_v<T>) {
             sqlite3_bind_int64(stmt, index, value);
         }

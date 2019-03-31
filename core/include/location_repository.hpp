@@ -12,16 +12,21 @@ namespace location_repository {
 
 template <typename DatabaseService, typename Entity, typename ExecuteResult, typename LoadResult>
 class LocationRepository : public RepositoryInterface<
-        LocationRepository<DatabaseService, Entity, ExecuteResult, LoadResult>,
-                DatabaseService, Entity, ExecuteResult, LoadResult
-                > {
+    LocationRepository<DatabaseService, Entity, ExecuteResult, LoadResult>,
+    DatabaseService, Entity, ExecuteResult, LoadResult
+> {
 public:
     explicit LocationRepository(const DatabaseService databaseService) : m_databaseService(databaseService) {}
-    location_repository::ExecuteResult insertImpl(const Entity& entity) {
+    location_repository::ExecuteResult insertImpl(Entity& entity) {
         auto connection = m_databaseService.getConnection();
+        #ifdef _WIN32
         auto result = connection.execute(
-                "INSERT INTO location (name) VALUES (@name);",
-                entity.name);
+            "INSERT INTO location (name) VALUES (@name);",
+            entity.Name());
+        #endif
+        auto result = connection.execute(
+            "INSERT INTO location (name) VALUES (@name);",
+            entity.name);
         if (std::holds_alternative<DatabaseError>(result)) {
             return result;
         }
@@ -30,16 +35,16 @@ public:
     location_repository::ExecuteResult updateImpl(const Entity& entity) {
         auto connection = m_databaseService.getConnection();
         return connection.execute(
-                "UPDATE location SET name = @name WHERE id = @id;",
-                entity.name,
-                entity.id
+            "UPDATE location SET name = @name WHERE id = @id;",
+            entity.name,
+            entity.id
         );
     }
     location_repository::ExecuteResult removeImpl(uint64_t id) {
         auto connection = m_databaseService.getConnection();
         return connection.execute(
-                "DELETE FROM location WHERE id = @id;",
-                id
+            "DELETE FROM location WHERE id = @id;",
+            id
         );
     }
     location_repository::LoadResult getAllImpl() {
@@ -49,9 +54,9 @@ public:
     location_repository::LoadResult getByIdImpl(uint64_t id) {
         auto connection = m_databaseService.getConnection();
         return connection.template load<Entity>(
-                "SELECT * FROM location WHERE id = @id;",
-                id
-        );
+            "SELECT * FROM location WHERE id = @id;",
+            id
+            );
     }
 private:
     DatabaseService m_databaseService;

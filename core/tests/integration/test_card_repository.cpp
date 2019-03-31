@@ -15,11 +15,11 @@ protected:
 
     inline static DatabaseService databaseService{ database::databaseName };
     inline static LocationRepository
-            <DatabaseService, models::Location,
-                    location_repository::ExecuteResult, location_repository::LoadResult> locationRepository{ databaseService };
+        <DatabaseService, models::Location,
+        location_repository::ExecuteResult, location_repository::LoadResult> locationRepository{ databaseService };
     inline static CardRepository
-            <DatabaseService, models::Card,
-                    card_repository::ExecuteResult, card_repository::LoadResult> cardRepository{ databaseService };
+        <DatabaseService, models::Card,
+        card_repository::ExecuteResult, card_repository::LoadResult> cardRepository{ databaseService };
 };
 
 TEST_F(CardRepositoryTest, testInsertWithLocation) {

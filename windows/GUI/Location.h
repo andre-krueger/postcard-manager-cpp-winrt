@@ -6,7 +6,7 @@ namespace winrt::GUI::implementation
 {
     struct Location : LocationT<Location>
     {
-        Location() = delete;
+        Location() {}
         Location(hstring const& name);
 
         hstring Name();
